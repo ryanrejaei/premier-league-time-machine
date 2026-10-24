@@ -6,15 +6,22 @@ A static Premier League historical table explorer. Compare **1–15 seasons side
 
 - Latest 1–15 seasons or any custom selection from **2012/13–2026/27**.
 - Synchronized Gameweeks: previous/next, dropdown, range slider, keyboard arrows and automated playback.
-- League-table columns: **P, W, D, L, GF, GA, GD, Pts** shown by default.
-- Click **Columns** to show/hide any of those fields, or add **YC, RC, shots, shots on target, corners, and fouls committed**. Column selections persist on the device using `localStorage`.
+- League-table columns: **GD and Pts** shown by default, with five compact tables fitting a desktop viewport (about 1,200px or wider). Extra columns widen cards; smaller screens scroll horizontally.
+- Click **Columns** to show or hide P, W, D, L, GF, GA, GD, Pts, **YC, RC, shots, shots on target, corners, and fouls committed**. Column selections persist on the device using `localStorage`.
 - Toggle eventual finish vs. selected Gameweek. Arrows mean **where the club will finish**, not where it is now:
-  - **Dark green ↑**: finishes **4 or more** places higher.
+  - **Dark green ↑**: finishes **10 or more** places higher.
+  - **Medium green ↑**: finishes **4–9** places higher.
   - **Light green ↑**: finishes **1–3** places higher.
   - **Orange ↓**: finishes **1–3** places lower.
-  - **Red ↓**: finishes **4 or more** places lower.
+  - **Light red ↓**: finishes **4–9** places lower.
+  - **Dark red ↓**: finishes **10 or more** places lower.
   - **Neutral =**: finishes unchanged.
-- Optional weekly-movement indicator. Highlight club rows across seasons by hovering/focusing.
+- Optional weekly-movement indicator. Click a club row (or press Enter/Space when focused) to pin its highlight across seasons and Gameweeks. Click again or use Clear highlight to unpin.
+- Turn on **Connect across seasons** after pinning a club to draw position arrows only in the gutters between adjacent tables. Colors follow the same 1–3 / 4–9 / 10+ rules, comparing the left table's position with the right table's position at the selected Gameweek. No line is drawn across a season where the club is absent.
+- First-visit, skippable two-step tour includes interactive column choices and team-tracking guidance. Reopen it using **Quick tour**. Dismissal and column preferences are remembered locally.
+- Centered Gameweek controls sit directly above the tables. Playback never starts automatically; switching tabs pauses it.
+- This update resets legacy column preferences once to the new GD/Pts defaults, then remembers new choices.
+- Club badges use the Premier League asset service, with initials as a fallback if an image is unavailable. Badges are current designs, not historical season-specific versions.
 - Current season omits final-position comparisons until all matches are complete.
 - No build process, API keys or backend needed.
 
@@ -85,7 +92,7 @@ This remains a **prototype**, not an authoritative historical standings database
 ## Suggested next development
 
 1. Matchweek-by-matchweek validation, official points deductions and appeals.
-2. Historical club badges with consistent team identities.
+2. Season-specific historical badge designs.
 3. Shareable URLs for selected seasons, Gameweek and columns.
 4. Chart team trajectories, points pace and title races.
 5. Snapshot public data into versioned repository files with an audited GitHub Action to reduce upstream downtime.
