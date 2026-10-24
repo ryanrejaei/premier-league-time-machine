@@ -73,6 +73,18 @@ function clubShortName(name){
   return aliases[n]||n.replace(/\bFootball Club\b/,'').trim();
 }
 function initials(name){const n=clubShortName(name),bits=n.split(/\s+/);return bits.length===1?n.slice(0,2).toUpperCase():bits.map(s=>s[0]).join('').slice(0,3).toUpperCase();}
+// Current club badges from the Premier League asset service; not season-specific historical designs.
+const BADGE_CODES = {"arsenal":3,"astonvilla":7,"bournemouth":91,"brightonhovealbion":36,"burnley":90,"chelsea":8,"crystalpalace":31,"everton":11,"leicestercity":13,"liverpool":14,"manchestercity":43,"manchesterunited":1,"newcastleunited":4,"norwichcity":45,"sheffieldunited":49,"southampton":20,"tottenhamhotspur":6,"watford":57,"westhamunited":21,"wolverhamptonwanderers":39,"fulham":54,"leedsunited":2,"westbromwichalbion":35,"brentford":94,"nottinghamforest":17,"lutontown":102,"ipswichtown":40,"sunderland":56,"hullcity":88,"huddersfieldtown":38,"cardiffcity":97,"swanseacity":80,"stokecity":110,"queensparkrangers":15,"reading":108,"wiganathletic":111,"coventrycity":10};
+function badgeUrl(name){
+  const club=normalizeClub(name);
+  const official={reading:108,wiganathletic:111,coventrycity:9,ipswichtown:41};
+  if(official[club])return `https://resources.premierleague.com/premierleague25/badges-alt/${official[club]}.svg`;
+  const code=BADGE_CODES[club];return code?`https://resources.premierleague.com/premierleague/badges/50/t${code}.png`:null;
+}
+function clubBadge(name){
+  const url=badgeUrl(name);
+  return `<span class="club-badge-wrap">${url?`<img class="club-badge" src="${url}" alt="" width="18" height="18" loading="lazy" decoding="async" referrerpolicy="no-referrer">`:''}<span class="badge-fallback" ${url?'hidden':''}>${escapeHtml(initials(name))}</span></span>`;
+}
 function fixtureId(home,away){return `${normalizeClub(home)}:${normalizeClub(away)}`;}
 function numberOrNull(value){return value===''||value==null?null:Number.isFinite(Number(value))?Number(value):null;}
 async function openFootballData(season){
@@ -217,7 +229,7 @@ function renderSeasonCard(season,data){
     const normalized=normalizeClub(team.name),compare=state.compare?changeMark(team.pos,finalPositions.get(team.name)):'',movement=state.movement?movementMark(team.pos,previousPositions.get(team.name)):'';
     const cls=team.pos===1?'pos-champion':team.pos<=4?'pos-european':team.pos>=18?'pos-relegation':'';
     const statCells=columns.map(col=>`<span class="stat-cell ${col.key==='pts'?'pts':''}" title="${escapeHtml(col.description)}: ${escapeHtml(displayCell(col,team))}">${escapeHtml(displayCell(col,team))}</span>`).join('');
-    return `<div class="team-row ${cls}${state.selectedClub===normalized?' team-selected':''}" data-club="${escapeHtml(normalized)}" data-position="${team.pos}" data-name="${escapeHtml(clubShortName(team.name))}" role="button" aria-pressed="${state.selectedClub===normalized}" aria-label="Track ${escapeHtml(clubShortName(team.name))} across seasons" tabindex="0" title="Click to pin ${escapeHtml(team.name)} across seasons"><span class="pos">${team.pos}</span><span class="team-name"><span class="club-dot">${escapeHtml(initials(team.name))}</span><span class="club-name">${escapeHtml(clubShortName(team.name))}</span><span class="marks">${compare}${movement}</span></span>${statCells}</div>`;
+    return `<div class="team-row ${cls}${state.selectedClub===normalized?' team-selected':''}" data-club="${escapeHtml(normalized)}" data-position="${team.pos}" data-name="${escapeHtml(clubShortName(team.name))}" role="button" aria-pressed="${state.selectedClub===normalized}" aria-label="Track ${escapeHtml(clubShortName(team.name))} across seasons" tabindex="0" title="Click to pin ${escapeHtml(team.name)} across seasons"><span class="pos">${team.pos}</span><span class="team-name">${clubBadge(team.name)}<span class="club-name">${escapeHtml(clubShortName(team.name))}</span><span class="marks">${compare}${movement}</span></span>${statCells}</div>`;
   }).join('');
   const cutoffLabel=Number.isFinite(cutoff)?new Date(cutoff-86400000).toISOString().slice(0,10):lastDate||'—';
   const header=columns.map(col=>`<span title="${escapeHtml(col.description)}">${escapeHtml(col.label)}</span>`).join('');
@@ -253,6 +265,7 @@ function attachRowHover(){
     el.addEventListener('click',select);
     el.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();select();}});
   });
+  track.querySelectorAll('.club-badge').forEach(img=>{img.addEventListener('error',()=>{img.hidden=true;img.nextElementSibling.hidden=false;},{once:true});});
   updateTracking();
 }
 function selectClub(club,name){
@@ -376,4 +389,4 @@ function init(){
   if(!visited)openTour();
 }
 if(typeof document!=='undefined')init();
-if(typeof module!=='undefined')module.exports={seasonKey,parseCSV,timeOf,cutoffForWeek,standings,normalizeClub,positionChange,changeClass,connectionPath,changeMark,numberOrNull,enrichFixtures,optionalStatistics,visibleColumns,COLUMN_DEFS};
+if(typeof module!=='undefined')module.exports={seasonKey,parseCSV,timeOf,cutoffForWeek,standings,normalizeClub,positionChange,changeClass,connectionPath,badgeUrl,changeMark,numberOrNull,enrichFixtures,optionalStatistics,visibleColumns,COLUMN_DEFS};
