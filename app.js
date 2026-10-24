@@ -77,7 +77,7 @@ function initials(name){const n=clubShortName(name),bits=n.split(/\s+/);return b
 const BADGE_CODES = {"arsenal":3,"astonvilla":7,"bournemouth":91,"brightonhovealbion":36,"burnley":90,"chelsea":8,"crystalpalace":31,"everton":11,"leicestercity":13,"liverpool":14,"manchestercity":43,"manchesterunited":1,"newcastleunited":4,"norwichcity":45,"sheffieldunited":49,"southampton":20,"tottenhamhotspur":6,"watford":57,"westhamunited":21,"wolverhamptonwanderers":39,"fulham":54,"leedsunited":2,"westbromwichalbion":35,"brentford":94,"nottinghamforest":17,"lutontown":102,"ipswichtown":40,"sunderland":56,"hullcity":88,"huddersfieldtown":38,"cardiffcity":97,"swanseacity":80,"stokecity":110,"queensparkrangers":15,"reading":108,"wiganathletic":111,"coventrycity":10};
 function badgeUrl(name){
   const club=normalizeClub(name);
-  const official={reading:108,wiganathletic:111,coventrycity:9,ipswichtown:41};
+  const official={reading:108,wiganathletic:111,coventrycity:9,ipswichtown:41,queensparkrangers:52};
   if(official[club])return `https://resources.premierleague.com/premierleague25/badges-alt/${official[club]}.svg`;
   const code=BADGE_CODES[club];return code?`https://resources.premierleague.com/premierleague/badges/50/t${code}.png`:null;
 }
