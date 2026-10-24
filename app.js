@@ -74,7 +74,7 @@ function clubShortName(name){
 }
 function initials(name){const n=clubShortName(name),bits=n.split(/\s+/);return bits.length===1?n.slice(0,2).toUpperCase():bits.map(s=>s[0]).join('').slice(0,3).toUpperCase();}
 // Current club badges from the Premier League asset service; not season-specific historical designs.
-const BADGE_CODES = {"arsenal":3,"astonvilla":7,"bournemouth":91,"brightonhovealbion":36,"burnley":90,"chelsea":8,"crystalpalace":31,"everton":11,"leicestercity":13,"liverpool":14,"manchestercity":43,"manchesterunited":1,"newcastleunited":4,"norwichcity":45,"sheffieldunited":49,"southampton":20,"tottenhamhotspur":6,"watford":57,"westhamunited":21,"wolverhamptonwanderers":39,"fulham":54,"leedsunited":2,"westbromwichalbion":35,"brentford":94,"nottinghamforest":17,"lutontown":102,"ipswichtown":40,"sunderland":56,"hullcity":88,"huddersfieldtown":38,"cardiffcity":97,"swanseacity":80,"stokecity":110,"queensparkrangers":15,"reading":108,"wiganathletic":111,"coventrycity":10};
+const BADGE_CODES = {"arsenal":3,"astonvilla":7,"bournemouth":91,"brightonhovealbion":36,"burnley":90,"chelsea":8,"crystalpalace":31,"everton":11,"leicestercity":13,"liverpool":14,"manchestercity":43,"manchesterunited":1,"newcastleunited":4,"norwichcity":45,"sheffieldunited":49,"southampton":20,"tottenhamhotspur":6,"watford":57,"westhamunited":21,"wolverhamptonwanderers":39,"fulham":54,"leedsunited":2,"westbromwichalbion":35,"brentford":94,"nottinghamforest":17,"lutontown":102,"ipswichtown":40,"sunderland":56,"hullcity":88,"huddersfieldtown":38,"cardiffcity":97,"swanseacity":80,"stokecity":110,"queensparkrangers":15,"middlesbrough":25,"reading":108,"wiganathletic":111,"coventrycity":10};
 function badgeUrl(name){
   const club=normalizeClub(name);
   const official={reading:108,wiganathletic:111,coventrycity:9,ipswichtown:41,queensparkrangers:52};
@@ -302,7 +302,7 @@ function drawConnections(){
     if(!from||!to)continue;
     const a=from.getBoundingClientRect(),b=to.getBoundingClientRect(),left=cards[i].getBoundingClientRect(),right=cards[i+1].getBoundingClientRect();
     // Endpoints, control points, and arrowheads all stay strictly inside the inter-card gap.
-    const x1=left.right-origin.left+2,x2=right.left-origin.left-2;
+    const x1=left.right-origin.left+4,x2=right.left-origin.left-4;
     if(x2<=x1)continue;
     const y1=a.top-origin.top+a.height/2,y2=b.top-origin.top+b.height/2;
     const delta=Number(from.dataset.position)-Number(to.dataset.position),cls=changeClass(delta),color=CHANGE_COLORS[cls];
