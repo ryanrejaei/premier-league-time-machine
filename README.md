@@ -17,7 +17,7 @@ A static Premier League historical table explorer. Compare **1–15 seasons side
   - **Dark red ↓**: finishes **10 or more** places lower.
   - **Neutral =**: finishes unchanged.
 - Optional weekly-movement indicator. Click a club row (or press Enter/Space when focused) to pin its highlight across seasons and Gameweeks. Click again or use Clear highlight to unpin.
-- Turn on **Connect across seasons** after pinning a club to draw position arrows only in the gutters between adjacent tables. Colors follow the same 1–3 / 4–9 / 10+ rules, comparing the left table's position with the right table's position at the selected Gameweek. No line is drawn across a season where the club is absent.
+- Turn on **Connect across seasons** after pinning a club to draw position arrows only in the gutters between adjacent tables. Colors follow the same 1–3 / 4–9 / 10+ rules, comparing the older season on the right with the newer season on the left. Arrows point right-to-left at the selected Gameweek. No line is drawn across a season where the club is absent.
 - First-visit, skippable two-step tour includes interactive column choices and team-tracking guidance. Reopen it using **Quick tour**. Dismissal and column preferences are remembered locally.
 - Centered Gameweek controls sit directly above the tables. Playback never starts automatically; switching tabs pauses it.
 - This update resets legacy column preferences once to the new GD/Pts defaults, then remembers new choices.
