@@ -284,7 +284,7 @@ function updateTracking(){
   $('clearTracking').hidden=!state.selectedClub;
   $('connectionsToggle').disabled=!state.selectedClub;
   $('connectionsToggle').checked=state.connections;
-  $('trackingNote').textContent=state.selectedClub&&state.connections?'Lines compare position from left to right at this Gameweek: green = higher, red/orange = lower. Gaps are left where the club is absent.':'Pin a club, then turn on connections to follow its position between neighboring seasons.';
+  $('trackingNote').textContent=state.selectedClub&&state.connections?'Lines run from older seasons on the right to newer seasons on the left at this Gameweek: green = higher, red/orange = lower. Gaps are left where the club is absent.':'Pin a club, then turn on connections to follow its position between neighboring seasons.';
   scheduleConnections();
 }
 function scheduleConnections(){
@@ -297,17 +297,17 @@ function drawConnections(){
   const cards=[...track.querySelectorAll('.season-card')],origin=track.getBoundingClientRect();
   const paths=[];
   for(let i=0;i<cards.length-1;i++){
-    const from=[...cards[i].querySelectorAll('.team-row')].find(r=>r.dataset.club===state.selectedClub);
-    const to=[...cards[i+1].querySelectorAll('.team-row')].find(r=>r.dataset.club===state.selectedClub);
+    const from=[...cards[i+1].querySelectorAll('.team-row')].find(r=>r.dataset.club===state.selectedClub);
+    const to=[...cards[i].querySelectorAll('.team-row')].find(r=>r.dataset.club===state.selectedClub);
     if(!from||!to)continue;
     const a=from.getBoundingClientRect(),b=to.getBoundingClientRect(),left=cards[i].getBoundingClientRect(),right=cards[i+1].getBoundingClientRect();
     // Endpoints, control points, and arrowheads all stay strictly inside the inter-card gap.
-    const x1=left.right-origin.left+4,x2=right.left-origin.left-4;
-    if(x2<=x1)continue;
+    const x1=right.left-origin.left-4,x2=left.right-origin.left+4;
+    if(x1<=x2)continue;
     const y1=a.top-origin.top+a.height/2,y2=b.top-origin.top+b.height/2;
     const delta=Number(from.dataset.position)-Number(to.dataset.position),cls=changeClass(delta),color=CHANGE_COLORS[cls];
-    const label=`${state.selectedName}: ${cards[i].dataset.season} position ${from.dataset.position} to ${cards[i+1].dataset.season} position ${to.dataset.position}`;
-    paths.push(`<defs><marker id="track-arrow-${i}" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L6,3 L0,6 Z" fill="${color}"/></marker></defs><path class="connection-line ${cls}" data-from="${cards[i].dataset.season}" data-to="${cards[i+1].dataset.season}" d="${connectionPath(x1,y1,x2,y2)}" fill="none" stroke="${color}" stroke-width="2.5" marker-end="url(#track-arrow-${i})"><title>${escapeHtml(label)}</title></path>`);
+    const label=`${state.selectedName}: ${cards[i+1].dataset.season} position ${from.dataset.position} to ${cards[i].dataset.season} position ${to.dataset.position}`;
+    paths.push(`<defs><marker id="track-arrow-${i}" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L6,3 L0,6 Z" fill="${color}"/></marker></defs><path class="connection-line ${cls}" data-from="${cards[i+1].dataset.season}" data-to="${cards[i].dataset.season}" d="${connectionPath(x1,y1,x2,y2)}" fill="none" stroke="${color}" stroke-width="2.5" marker-end="url(#track-arrow-${i})"><title>${escapeHtml(label)}</title></path>`);
   }
   track.insertAdjacentHTML('beforeend',`<svg class="connection-overlay" role="img" aria-label="${escapeHtml(state.selectedName)} position connections across seasons" width="${track.scrollWidth}" height="${track.scrollHeight}" viewBox="0 0 ${track.scrollWidth} ${track.scrollHeight}">${paths.join('')}</svg>`);
 }
