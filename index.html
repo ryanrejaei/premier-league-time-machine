@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0e1020">
+  <title>Premier League Time Machine</title>
+  <meta name="description" content="Explore fifteen Premier League seasons side by side, one gameweek at a time.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="site-header">
+      <div class="brand"><span class="brand-icon" aria-hidden="true">⚽</span><div><div class="brand-overline">THE FOOTBALL ARCHIVE</div><h1>TABLE<span>TIME</span> MACHINE</h1></div></div>
+      <div class="header-actions"><button class="ghost-button" id="helpButton" aria-label="Show how this works">How it works <span aria-hidden="true">↗</span></button><span class="header-dot" aria-hidden="true"></span><span class="header-subtitle">PREMIER LEAGUE • 2012–PRESENT</span></div>
+    </header>
+    <main>
+      <section class="intro">
+        <div><div class="eyebrow"><span class="pulse-dot"></span> HISTORICAL LEAGUE EXPLORER</div><h2>Every season.<br><em>Every gameweek.</em></h2><p>See how the Premier League table changed through the years. One gameweek, multiple seasons, all in sync.</p></div>
+        <div class="intro-stat" aria-hidden="true"><span class="intro-big">15</span><span>SEASONS TO EXPLORE</span></div>
+      </section>
+      <section class="control-panel" aria-label="Table controls">
+        <div class="control-top">
+          <div class="control-cell"><label for="seasonCount">NUMBER OF SEASONS</label><div class="inline-control"><select id="seasonCount" aria-label="Number of recent seasons"></select><span class="subtle">most recent</span></div></div>
+          <div class="control-cell control-week"><label for="weekSelect">JUMP TO GAMEWEEK</label><div class="inline-control"><select id="weekSelect" aria-label="Jump to gameweek"></select><span class="subtle">of 38</span></div></div>
+          <div class="control-cell"><label for="compareToggle">TABLE OVERLAYS</label><label class="toggle-row"><input type="checkbox" id="compareToggle"><span class="switch" aria-hidden="true"></span><span>Vs. final position</span></label></div>
+          <div class="control-cell"><label for="changeToggle">EXTRA INSIGHT</label><label class="toggle-row"><input type="checkbox" id="changeToggle"><span class="switch" aria-hidden="true"></span><span>Movement this week</span></label></div>
+          <div class="control-cell last-control"><label>SEASON SELECTION</label><button id="chooseSeasons" class="outline-button" aria-expanded="false" aria-controls="seasonPicker">Choose years <span aria-hidden="true">⌄</span></button></div>
+        </div>
+        <div class="choose-panel" id="seasonPicker" hidden><div class="picker-top"><div><strong>Select seasons</strong><p>Pick any 1–15 seasons to compare. Your choice overrides “most recent.”</p></div><button id="resetSeasons" class="text-button">Reset to latest</button></div><div class="season-check-grid" id="seasonChecks"></div></div>
+        <div class="control-bottom"><div class="gameweek-row"><button id="prevWeek" class="step-button" aria-label="Previous gameweek">‹</button><div class="week-label"><span>GAMEWEEK</span><strong id="weekNumber">01 <span>/ 38</span></strong></div><button id="nextWeek" class="step-button" aria-label="Next gameweek">›</button><div class="slider-wrap"><input type="range" id="weekSlider" min="1" max="38" value="1" aria-label="Gameweek slider"><div class="slider-labels"><span>GW 1</span><span>GW 10</span><span>GW 20</span><span>GW 30</span><span>GW 38</span></div></div><button id="playButton" class="play-button">▶ <span>Play</span></button></div></div>
+      </section>
+      <div class="table-toolbar"><div><h3>League standings <span id="seasonCountLabel">— 5 seasons</span></h3><p id="dataStatus" role="status">Loading historical results…</p></div><div class="legend"><span><i class="legend-square champion"></i>1st</span><span><i class="legend-square european"></i>Top 4</span><span><i class="legend-square relegation"></i>Bottom 3</span><button id="chooseColumns" class="outline-button column-button" aria-expanded="false" aria-controls="columnsPanel">⚙ Columns</button><span class="scroll-hint">SCROLL TO EXPLORE →</span></div></div>
+      <section class="choose-panel columns-panel" id="columnsPanel" aria-label="Customize visible columns" hidden>
+        <div class="picker-top"><div><strong>Customize table columns</strong><p>Position and club are always shown. Other columns are applied to every visible season.</p></div><button id="resetColumns" class="text-button">Reset columns</button></div>
+        <div class="columns-check-grid" id="columnChecks"></div>
+        <p class="column-note">Advanced statistics are summed from matches played through the selected Gameweek. A dash (—) means the statistic is unavailable or incomplete, not zero. Card counts are for teams, not individual players.</p>
+      </section>
+      <section class="tables-viewport" id="tablesViewport" aria-label="Side-by-side Premier League tables"><div class="tables-track" id="tablesTrack"><div class="initial-loading">Preparing the time machine…</div></div></section>
+      <div class="footline"><div id="comparisonLegend"></div><div>Data: <a href="https://github.com/openfootball/football.json" target="_blank" rel="noreferrer">OpenFootball</a>, <a href="https://github.com/vaastav/Fantasy-Premier-League" target="_blank" rel="noreferrer">FPL archive</a>, <a href="https://github.com/footydeano/fpl-data" target="_blank" rel="noreferrer">FPL data</a>, and <a href="https://github.com/qhtexas/football-dataset" target="_blank" rel="noreferrer">Football Dataset</a></div></div>
+      <section class="about" id="aboutSection" hidden><h3>How to read these tables</h3><p>The selected Gameweek shows results played before the next regular round begins. Postponed fixtures are included when they were actually played, not retroactively. P = played, W = wins, D = draws, L = losses, GF = goals for, GA = goals against, GD = goal difference, Pts = points. Optional columns include YC = yellow cards, RC = red cards, Sh = shots, SOT = shots on target, Cor = corners, F = fouls committed.</p><p>Enable <strong>Vs. final position</strong> to see how many places the club will rise or fall by the end of the season: dark green up = 4+ places gained, light green up = 1–3 gained, orange down = 1–3 lost, red down = 4+ lost, and equals = unchanged. For the current season, the final rank doesn't exist yet, so no comparison appears. Historical ranking follows points, goal difference and goals scored, with team-name fallback for unresolved ties; rare league tiebreakers and points deductions aren't yet modeled.</p></section>
+    </main>
+    <footer>AN INDEPENDENT PREMIER LEAGUE DATA EXPLORER <span>•</span> NOT AFFILIATED WITH THE PREMIER LEAGUE</footer>
+  </div>
+  <script src="app.js" defer></script>
+</body>
+</html>
